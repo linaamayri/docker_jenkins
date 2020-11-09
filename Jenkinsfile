@@ -4,6 +4,8 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Building Docker Images'
+        sh 'docker build -t myflaskapp .'
+        sh 'docker run -p 5000:5000 myflaskapp'
       }
     }
 

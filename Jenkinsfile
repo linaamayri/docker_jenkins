@@ -34,13 +34,21 @@ pipeline {
     }
 
     stage('Stop Containers') {
-      steps {
-        echo 'Deploying Now'
-        sh 'docker stop myflaskapp'
-        sh 'docker stop redis'
-        sh 'docker rm myflaskapp'
-        sh 'docker rm redis'
-        sh 'docker rmi myflaskapp'
+      parallel {
+        stage('Stop Containers') {
+          steps {
+            echo 'Deploying Now'
+            sh 'docker rm -f myflaskapp'
+            sh 'docker rmi myflaskapp'
+          }
+        }
+
+        stage('') {
+          steps {
+            sh 'docker rm redis'
+          }
+        }
+
       }
     }
 

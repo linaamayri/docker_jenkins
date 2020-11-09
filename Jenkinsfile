@@ -26,7 +26,7 @@ pipeline {
         stage('Run Redis') {
           steps {
             echo 'Running redis'
-            sh 'docker run -p 6379:6379 -d --name redis redis:alpine'
+            sh '#docker run -p 6379:6379 -d --name redis redis:alpine'
           }
         }
 
@@ -51,8 +51,8 @@ pipeline {
 
         stage('error') {
           steps {
-            sh 'docker stop redis'
-            sh 'docker rm redis'
+            sh '#docker stop redis'
+            sh '#docker rm redis'
           }
         }
 

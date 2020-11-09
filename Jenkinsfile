@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                sh 'wget -q --spider http://localhost:5000'
+                sh 'docker-compose up'
             }
         }
     }

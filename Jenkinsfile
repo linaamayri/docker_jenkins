@@ -33,17 +33,23 @@ pipeline {
       }
     }
 
+    stage('Testing') {
+      steps {
+        echo 'Deploying Now'
+        sh 'python test_app.py'
+      }
+    }
+
     stage('Stop Containers') {
       parallel {
         stage('Stop Containers') {
           steps {
-            echo 'Deploying Now'
             sh 'docker rm -f myflaskapp'
             sh 'docker rmi myflaskapp'
           }
         }
 
-        stage('error') {
+        stage('') {
           steps {
             sh 'docker stop redis'
             sh 'docker rm redis'

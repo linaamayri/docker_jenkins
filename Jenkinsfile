@@ -19,14 +19,14 @@ pipeline {
         stage('Run Docker Image') {
           steps {
             echo 'Running Flask app'
-            sh 'docker start -p 5000:5000 --name  myflaskapp  myflaskapp'
+            sh 'docker run -p 5000:5000 --name  myflaskapp  myflaskapp'
           }
         }
 
         stage('Run Redis') {
           steps {
             echo 'Running redis'
-            sh 'docker start -p 6379:6379 --name redis redis:alpine'
+            sh 'docker run -p 6379:6379 --name redis redis:alpine'
           }
         }
 

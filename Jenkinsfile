@@ -38,6 +38,9 @@ pipeline {
         echo 'Deploying Now'
         sh 'docker stop myflaskapp'
         sh 'docker stop redis'
+        sh 'docker rm myflaskapp'
+        sh 'docker rm redis'
+        sh 'docker rmi myflaskapp'
       }
     }
 

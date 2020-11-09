@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 from redis import Redis, RedisError, StrictRedis
+from flask_redis import FlaskRedis
 import json
 
 app = Flask(__name__)
@@ -68,7 +69,8 @@ def index():
 	return render_template('index.html')
 
 if __name__ == '__main__':
-	redis_client = StrictRedis(host='172.17.0.3', port=6379)
+	redis_client = FlaskRedis(app)
+	#redis_client = StrictRedis(host='172.17.0.3', port=6379)
 	app.run(host='0.0.0.0')
 	
 	

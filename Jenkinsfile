@@ -19,23 +19,25 @@ pipeline {
         stage('Run Docker Image') {
           steps {
             echo 'Running Flask app'
-            sh 'docker run -p 5000:5000 myflaskapp'
+            sh 'docker run -p 5000:5000 -n  myflaskapp  myflaskapp'
           }
         }
 
         stage('Run Redis') {
           steps {
             echo 'Running redis'
-            sh 'docker run -p 6379:6379 redis:alpine'
+            sh 'docker run -p 6379:6379 -n redis redis:alpine'
           }
         }
 
       }
     }
 
-    stage('Deploy') {
+    stage('Stop Containers') {
       steps {
         echo 'Deploying Now'
+        sh 'docker stop myflaskapp'
+        sh 'docker stop redis'
       }
     }
 

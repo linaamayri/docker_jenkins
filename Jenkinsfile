@@ -49,7 +49,7 @@ pipeline {
           }
         }
 
-        stage('') {
+        stage('error') {
           steps {
             sh 'docker stop redis'
             sh 'docker rm redis'

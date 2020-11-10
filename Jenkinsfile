@@ -2,16 +2,25 @@ pipeline {
   agent any
   stages {
     stage('build') {
+      steps {
+        echo 'We are in Build Stage'
+        sh 'docker build -t myflaskapp3 .'
+      }
+    }
+
+    stage('Run') {
       parallel {
-        stage('build') {
+        stage('Run') {
           steps {
-            echo 'We are in Build Stage'
+            echo 'We are in run Stage'
+            sh 'docker run -d -p 5000:5000 --name myflaskapp3_c myflaskapp3'
           }
         }
 
-        stage('Build2') {
+        stage('Run 2') {
           steps {
-            echo 'We are in Build 2 stage'
+            echo 'We are in test 2 stage'
+            sh 'docker run -d -p 6379:6379 --name myredis redis'
           }
         }
 
@@ -19,16 +28,25 @@ pipeline {
     }
 
     stage('Test') {
+      steps {
+        echo 'We are in Testing Stage'
+        sh 'python test_app.py'
+      }
+    }
+
+    stage('Remove Imgaes') {
       parallel {
-        stage('Test') {
+        stage('Remove Imgaes') {
           steps {
-            echo 'We are in test Stage'
+            sh 'docker stop myflaskapp3_c'
+            sh 'docker rmi -f myflaskapp3_c'
           }
         }
 
-        stage('Test 2') {
+        stage('Remove Redis') {
           steps {
-            echo 'We are in test 2 stage'
+            sh 'docker stop myredis'
+            sh 'docker rmi -f myredis'
           }
         }
 
@@ -37,7 +55,7 @@ pipeline {
 
     stage('Finish') {
       steps {
-        echo 'We are in rg=he Finishing Stage'
+        echo 'The pipeline is finished'
       }
     }
 

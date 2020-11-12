@@ -2,8 +2,10 @@ pipeline{
 	agent any
 	stages{
 		stage('Build') {
-			echo 'Building the docker images'
-			sh 'docker build -t myflaskapp .'
+			steps{
+				echo 'Building the docker images'
+				sh 'docker build -t myflaskapp .'
+			}
 		}
 		parallel{
 			stage('run redis'){
@@ -23,11 +25,9 @@ pipeline{
 			}
 		}
 		stage ('Stop Containers') {
-			stage{
-				steps{
-					sh 'docker rm -f myflaskapp_c'
-					sh 'docker rm -f redis'
-				}
+			steps{
+				sh 'docker rm -f myflaskapp_c'
+				sh 'docker rm -f redis'
 			}
 		}
 	}

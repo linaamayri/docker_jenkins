@@ -1,43 +1,31 @@
 pipeline {
+  environment {
+    registry = "khintervenant/docker-test"
+    registryCredential = 'p3+jq$d2(#dV=a3'
+    dockerImage = ''
+  }
   agent any
   stages {
-    stage('Building') {
-      steps {
-        echo 'In building Stage'
-        sh 'docker build -t myflaskapp .'
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
       }
     }
-
-    stage('Run Containers') {
-      parallel {
-        stage('Run Containers') {
-          steps {
-            echo 'In Testing Stage'
-            sh 'docker run -d -p 6379:6379 --name myredis redis:alpine'
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
           }
         }
-
-        stage('running flask') {
-          steps {
-            sh 'docker run -d -p 5000:5000 --name myflaskapp_c myflaskapp'
-          }
-        }
-
       }
     }
-
-    stage('Testing') {
-      steps {
-        echo 'In Final Stage'
-        sh 'python test_app.py'
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
       }
     }
-
-    stage('Final') {
-      steps {
-        sh 'docker container rm -f $(docker container ls -qa)'
-      }
-    }
-
   }
 }

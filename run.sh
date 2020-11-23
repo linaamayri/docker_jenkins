@@ -11,7 +11,7 @@ do
 		echo "Offline"
 		sleep 5
 	fi
-done
+done 
 
 python test_app.py 
  

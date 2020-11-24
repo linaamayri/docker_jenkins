@@ -3,7 +3,6 @@ pipeline{
     stages{
       stage('Build'){
       steps{
-        ehco 'bbbb'
         sh 'docker build -t myflaskapp .'
         }
         }

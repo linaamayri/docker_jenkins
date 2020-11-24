@@ -1,0 +1,28 @@
+pipeline{
+    agent any 
+    stages{
+      stage('Build'){
+        ehco 'bbbb'
+        sh'docker build -t myflaskapp .'
+        }
+        stage('Run Containers'){
+        parallel{
+        stage('run redis'){
+            steps{
+            sh'docker run -d -p 6379:6379 -name myredis redis'
+            }
+          }
+          stage('run flask'){
+            steps{
+            sh'docker run -d -p 5000:5000 -name myflaskapp_c myflaskapp'
+            }}}}
+               stage('Testing'){
+            steps{
+            sh'python test_app.py'
+            }}
+            
+               stage('stop Containers'){
+            steps{
+            sh'docker rm-f myflaskapp'
+            sh'docker rm-f redis'
+            }}}}}

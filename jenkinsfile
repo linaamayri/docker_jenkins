@@ -7,7 +7,7 @@ pipeline{
         sh'docker build -t myflaskapp .'
         }
         }
-        
+        stage('bulding_continer'){
         parallel{
         stage('run redis'){
             steps{

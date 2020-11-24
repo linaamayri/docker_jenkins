@@ -2,10 +2,12 @@ pipeline{
     agent any 
     stages{
       stage('Build'){
+      steps{
         ehco 'bbbb'
         sh'docker build -t myflaskapp .'
         }
-        stage('Run Containers'){
+        }
+        
         parallel{
         stage('run redis'){
             steps{
@@ -25,4 +27,4 @@ pipeline{
             steps{
             sh'docker rm-f myflaskapp'
             sh'docker rm-f redis'
-            }}}}}
+            }}}}
